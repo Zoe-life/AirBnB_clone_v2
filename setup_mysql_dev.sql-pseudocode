@@ -1,0 +1,26 @@
+// Prepare MySQL server for AirBnB project development
+
+FUNCTION SetupMySQLDev(host, root_user, root_password, dev_user, dev_password, dev_db)
+
+  // Check if database 'dev_db' exists
+  IF DatabaseExists(host, root_user, root_password, dev_db) THEN
+    PRINT "Database '" + dev_db + "' already exists."
+  ELSE
+    CREATE DATABASE dev_db;
+  END IF
+
+  // Check if user 'dev_user'@'host' exists
+  IF UserExists(host, root_user, root_password, dev_user) THEN
+    PRINT "User '" + dev_user + "'@'" + host + "' already exists."
+  ELSE
+    CREATE USER dev_user@host IDENTIFIED BY dev_password;
+  END IF
+
+  // Grant all privileges on 'dev_db' to 'dev_user'@'host'
+  GRANT ALL PRIVILEGES ON dev_db.* TO dev_user@host;
+
+  // Grant SELECT privilege on 'performance_schema' to 'dev_user'@'host'
+  GRANT SELECT ON performance_schema.* TO dev_user@host;
+
+  // Flush privileges to ensure changes take effect
+  FLUSH PRIVILEGES;
