@@ -10,4 +10,6 @@ class City(BaseModel, Base):
     __tablename__ = 'cities'
     state_id = Column(String(60), nullable=False, ForeignKey('states.id'))
     name = Column(String(128), nullable=False)
-    places = orm.relationship("Place", backref="city", cascade="all, delete-orphan")
+    places = orm.relationship(
+            "Place", backref="cities", cascade="all, delete-orphan"
+            )
